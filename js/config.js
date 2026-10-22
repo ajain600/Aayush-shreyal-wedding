@@ -34,7 +34,7 @@ window.INVITE = {
   music: { youtubeId: "", file: "media/background-music.mp3" },
 
    photos: [
-    { src: "imagesgallery-01.jpg", caption: "Our little moments" },
+    { src: "images/imagesgallery-01.jpg", caption: "Our little moments" },
    
   ],
 
