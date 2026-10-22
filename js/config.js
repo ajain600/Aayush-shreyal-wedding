@@ -26,7 +26,8 @@ window.INVITE = {
     gardenVideo: "media/formal-garden-background.mp4",       // optional video behind "We are getting married"
     gardenPoster: "images/formal-garden-poster.jpg",         // JPG background behind "We are getting married" (also the video's poster)
     symbol: "images/swastik.png",                              // symbol at the top of the hero (replaces ganeshji.png)
-    image: "images/mehndi-portrait.jpg"
+    image: "images/mehndi-portrait.jpg",
+    photos: "images/imagesgallery-01.jpg"
   },
 
 
