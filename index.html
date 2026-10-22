@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#741e2c">
+<meta name="description" content="You are warmly invited to the wedding of Aayush and Shreyal, 24 November 2026.">
+<meta property="og:title" content="Aayush & Shreyal · शुभ विवाह">
+<meta property="og:description" content="You are warmly invited to our wedding celebrations. 22–24 November 2026.">
+<title>Aayush &amp; Shreyal · शुभ विवाह</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Noto+Serif+Devanagari:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="locked">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<defs><clipPath id="heartClip" clipPathUnits="objectBoundingBox"><path d="M.5 .96C.16 .72 .02 .52 .02 .3 .02 .12 .15 .03 .28 .03 .4 .03 .47 .1 .5 .18 .53 .1 .6 .03 .72 .03 .85 .03 .98 .12 .98 .3 .98 .52 .84 .72 .5 .96Z"/></clipPath></defs>
+<symbol id="swagS" viewBox="0 0 400 70"><path d="M-10 4Q95 64 200 4T410 4" fill="none" stroke="#a52a3b" stroke-width="9" stroke-linecap="round" stroke-dasharray="1 11"/><path d="M-10 4Q95 44 200 4T410 4" fill="none" stroke="#c79c4f" stroke-width="6" stroke-linecap="round" stroke-dasharray="1 10"/></symbol>
+<symbol id="castle" viewBox="0 0 400 260"><g fill="currentColor"><rect x="0" y="196" width="400" height="64"/><path d="M0 190H400" stroke="currentColor" stroke-width="12" stroke-dasharray="14 10"/><rect x="120" y="96" width="160" height="164"/><path d="M130 96Q200 12 270 96z"/><rect x="198" y="22" width="4" height="22"/><circle cx="200" cy="20" r="5"/><rect x="28" y="118" width="56" height="142"/><path d="M22 118Q56 56 90 118z"/><rect x="316" y="118" width="56" height="142"/><path d="M310 118Q344 56 378 118z"/></g></symbol>
+</svg>
+
+<div class="petal-layer" id="petalLayer" aria-hidden="true"></div>
+<audio id="mp3" loop hidden></audio>
+<div id="ytbox"><div id="ytp"></div></div>
+
+<section class="opening" id="opening" aria-label="Open wedding invitation">
+  <div class="stage">
+    <div class="beyond"></div>
+    <div class="door l"><div class="pn"></div><div class="pb"></div><i class="knob"></i></div>
+    <div class="door r"><div class="pn"></div><div class="pb"></div><i class="knob"></i></div>
+    <i class="cur l"></i><i class="cur r"></i>
+    <svg class="swag" viewBox="0 0 400 70" preserveAspectRatio="none"><use href="#swagS"/></svg>
+    <div class="petals-floor"></div>
+    <div id="eLamps"></div>
+  </div>
+  <div class="glass"></div>
+  <div class="entrance-copy">
+    <p class="hindi" lang="hi">॥ शुभ विवाह ॥</p>
+    <p class="eyebrow">Together with our families</p>
+    <h1><span id="eG"></span><i>&amp;</i><span id="eB"></span></h1>
+    <div class="rule">✦</div>
+    <p class="entrance-date" id="eDate"></p>
+    <button class="primary" id="openInvite" type="button">Open Invitation <span aria-hidden="true">↗</span></button>
+    <p class="entrance-foot">With love, we invite you</p>
+  </div>
+  <button class="skip" id="skip" type="button">Tap to skip ↓</button>
+</section>
+
+<div id="site" inert>
+<header class="site-header">
+  <a href="#home" class="monogram" id="mono" aria-label="Home"></a>
+  <nav aria-label="Main"><a href="#gallery" data-nav="gallery">Our moments</a><a href="#events">Celebrations</a><a href="#venue">Venues</a><a href="#rsvp">RSVP</a></nav>
+  <div class="hc">
+    <button id="music" class="ib" type="button" aria-label="Turn music on" aria-pressed="false" data-playing="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path class="on" d="M15 9a5 5 0 0 1 0 6m3-9a9 9 0 0 1 0 12"/><path class="off" d="m16 9 5 6m0-6-5 6"/></svg></button>
+    <button id="menuBtn" class="ib" type="button" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</header>
+<main>
+  <section class="formal" id="home">
+    <svg class="castle" viewBox="0 0 400 260" aria-hidden="true"><use href="#castle"/></svg>
+    <div class="formal-panel">
+      <img class="ganesh-logo" id="symbol" alt="Auspicious swastik symbol" width="96" height="96">
+      <p class="hindi" id="invocation" lang="hi"></p>
+      <p class="eyebrow">We are getting married</p>
+      <div class="couple"><h2 id="gName"></h2><p id="gPar"></p><i>&amp;</i><h2 id="bName"></h2><p id="bPar"></p></div>
+      <p class="blessing">Your presence will make our special day even more memorable.</p>
+      <p class="formal-date" id="heroDate"></p>
+      <a class="text-link" href="#reveal">Begin our story ↓</a>
+    </div>
+  </section>
+
+  <section class="reveal section" id="reveal">
+    <p class="eyebrow">A little surprise, just for you</p>
+    <h2>A date with forever</h2>
+    <p class="intro">Scratch the heart to reveal our special day.</p>
+    <div class="scratch-card" id="scratchCard">
+      <div class="date-reveal" id="dReveal"></div>
+      <canvas id="scratchCanvas" tabindex="0" role="button" aria-label="Reveal wedding date: press Enter or scratch the heart"></canvas>
+    </div>
+    <button class="text-link" id="revealBtn" type="button">Tap to reveal instead</button>
+    <div class="countdown-wrap">
+      <p class="eyebrow">Counting down to our forever</p>
+      <div class="countdown" id="countdown"></div>
+      <p class="tiny" id="cdLine"></p>
+    </div>
+  </section>
+
+  <section class="gallery section" id="gallery">
+    <p class="eyebrow">Little moments. A lifetime of love.</p>
+    <h2>Better, together.</h2>
+    <p class="intro">A few of our favourite memories.</p>
+    <div class="gallery-track" id="galleryTrack"></div>
+    <p class="tiny">Tap a photograph to enlarge</p>
+  </section>
+
+  <section class="events section" id="events">
+    <p class="hindi" lang="hi">उत्सव</p>
+    <p class="eyebrow">Come, celebrate with us</p>
+    <h2>The wedding festivities</h2>
+    <p class="intro" id="evIntro"></p>
+    <div class="event-grid" id="eventGrid"></div>
+    <p class="tiny">All timings are in Indian Standard Time (IST).</p>
+  </section>
+
+  <section class="venues section" id="venue">
+    <p class="eyebrow">We look forward to welcoming you</p>
+    <h2>Where we’ll celebrate</h2>
+    <div class="venue-grid" id="venueGrid"></div>
+  </section>
+
+  <section class="section" id="rsvp">
+    <div class="guestbook">
+      <div class="form-card">
+        <p class="eyebrow">Your presence is our greatest gift</p>
+        <h2>Will you join us?</h2>
+        <form id="rsvpForm">
+          <label>Your name<input name="name" autocomplete="name" required maxlength="120" placeholder="Full name"></label>
+          <fieldset><legend>Will you be attending?</legend>
+            <label class="radio-label"><input type="radio" name="attending" value="Joyfully attending" required> Joyfully attending</label>
+            <label class="radio-label"><input type="radio" name="attending" value="Sadly unable to attend"> Sadly unable to attend</label>
+          </fieldset>
+          <label id="gcLabel">Number of guests, including you
+            <select name="guests"><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option></select></label>
+          <button class="primary" type="submit">Send RSVP on WhatsApp</button>
+          <div class="also" aria-live="polite"></div>
+        </form>
+      </div>
+      <div class="form-card" id="wishes">
+        <p class="eyebrow">Words we’ll treasure</p>
+        <h2>Send your blessings</h2>
+        <form id="wishForm">
+          <label>Your name<input name="name" autocomplete="name" required maxlength="120" placeholder="Full name"></label>
+          <label>Your wishes<textarea name="message" required maxlength="500" rows="5" placeholder="A little love for the happy couple…"></textarea></label>
+          <button class="primary" type="submit">Send wishes on WhatsApp</button>
+          <div class="also" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="closing">
+    <p class="hindi" lang="hi">सप्रेम आमंत्रण</p>
+    <h2>With love &amp; gratitude</h2>
+    <p>We can’t wait to celebrate with you.</p>
+    <strong id="clNames"></strong>
+    <div class="rule">✦</div>
+    <p class="tiny" id="clDate"></p>
+  </footer>
+</main>
+</div>
+
+<dialog id="menuDlg" aria-label="Navigation"><button class="close" data-close aria-label="Close menu">×</button><p class="monogram" id="mono2"></p>
+  <nav><a href="#home">Invitation</a><a href="#reveal">The date</a><a href="#gallery" data-nav="gallery">Our moments</a><a href="#events">Celebrations</a><a href="#venue">Venues</a><a href="#rsvp">RSVP &amp; wishes</a></nav></dialog>
+<dialog id="eventModal" aria-labelledby="mTitle"><button class="close" data-close aria-label="Close event details">×</button>
+  <div class="event-art" id="mArt"></div>
+  <div class="modal-copy"><p class="eyebrow" id="mDate"></p><h2 id="mTitle"></h2><p id="mTime"></p><p class="intro" id="mText"></p><strong id="mVenue"></strong>
+  <a id="mMap" class="primary" target="_blank" rel="noopener">View on Google Maps ↗</a></div></dialog>
+<dialog id="lightbox" aria-label="Photograph"><button class="close" data-close aria-label="Close photograph">×</button>
+  <img id="lbImg" alt=""><p id="lbCap"></p>
+  <div class="lbc"><button class="ib" id="lbPrev" aria-label="Previous photograph">←</button><span id="lbCount"></span><button class="ib" id="lbNext" aria-label="Next photograph">→</button></div></dialog>
+
+<script src="js/config.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
