@@ -6,7 +6,7 @@ window.INVITE = {
   groomParents: "S/o Shri Mukesh Jain & Smt. Anju Jain",
   brideParents: "D/o Shri Manish Jain & Smt. Seema Jain",
   dateDisplay: "November 2026",
-  reveal: { day: "Tuesday", date: "24th November", year: "2026", time: "7:00 PM onwards" },
+  reveal: { day: "Tuesday", date: "24th November", year: "2026"},
   countdownTo: "2026-11-24T19:00:00+05:30",   // the wedding (Barat)
   /* RSVPs and wishes open WhatsApp to the FIRST number; the guest then sees one-tap buttons to send the same
      message to the others. Format: country code + number, no + or spaces (91 = India). "name" is optional. */
