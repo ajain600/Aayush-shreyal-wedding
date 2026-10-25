@@ -8,7 +8,7 @@ const isImg = s => /\.(gif|jpe?g|png|webp)$/i.test(s);
 /* ---------- text from config ---------- */
 document.title = `${I.groom} & ${I.bride} · शुभ विवाह`;
 for (const [id, t] of [['eG', I.groom], ['eB', I.bride], ['gName', I.groom], ['bName', I.bride], ['gPar', I.groomParents], ['bPar', I.brideParents],
-  ['eDate', I.dateDisplay.toUpperCase()], ['heroDate', I.dateDisplay], ['clDate', I.dateDisplay.toUpperCase()],
+  ['clDate', I.dateDisplay.toUpperCase()],
   ['cdLine', `${I.dateDisplay} · ${I.reveal.time.replace(' onwards', '')} IST`]]) $(id).textContent = t;
 $('mono').innerHTML = $('mono2').innerHTML = `${I.groom[0]} <i>&amp;</i> ${I.bride[0]}`;
 $('mono').setAttribute('aria-label', `${I.groom} and ${I.bride} home`);
@@ -112,10 +112,10 @@ function tick() {
 }
 tick(); setInterval(tick, 1000);
 
-/* ---------- scratch the heart ---------- */
+/* ---------- scratch the heart (opens by itself with a splash when this part of the page is on screen) ---------- */
 (function () {
   const c = $('scratchCanvas'), card = $('scratchCard'), ctx = c.getContext('2d');
-  let down = false, last = null, dist = 0, done = false;
+  let down = false, last = null, dist = 0, done = false, autoTimer = 0;
   function cover() {
     if (done) return; const r = card.getBoundingClientRect(), d = Math.min(devicePixelRatio || 1, 2);
     c.width = r.width * d; c.height = r.height * d; ctx.setTransform(d, 0, 0, d, 0, 0); ctx.globalCompositeOperation = 'source-over';
@@ -125,10 +125,17 @@ tick(); setInterval(tick, 1000);
     ctx.font = '13px Arial'; ctx.fillText('to reveal our wedding date', r.width / 2, r.height * .56);
     ctx.globalCompositeOperation = 'destination-out'; ctx.lineCap = ctx.lineJoin = 'round'; ctx.lineWidth = 42;
   }
+  function ring(x, y, delay) {
+    const el = document.createElement('i'); el.className = 'ring'; el.style.left = x + 'px'; el.style.top = y + 'px'; el.style.animationDelay = delay + 's';
+    document.body.append(el); setTimeout(() => el.remove(), 2000);
+  }
   function reveal() {
-    if (done) return; done = true; card.classList.add('done'); c.tabIndex = -1;
+    if (done) return; done = true; clearTimeout(autoTimer);
+    card.classList.add('done', 'splash'); c.tabIndex = -1;
     $('revealBtn').textContent = `${I.reveal.day}, ${I.reveal.date} ${I.reveal.year}`; $('revealBtn').disabled = true;
-    const r = card.getBoundingClientRect(); confetti(r.left + r.width / 2, r.top + r.height / 2);
+    const r = card.getBoundingClientRect(), x = r.left + r.width / 2, y = r.top + r.height / 2;
+    if (!reduced) { ring(x, y, 0); ring(x, y, .25); ring(x, y, .5); }
+    confetti(x, y); setTimeout(() => confetti(x, y), 280);
   }
   function move(e) {
     if (!down || done) return; const r = c.getBoundingClientRect(), p = { x: e.clientX - r.left, y: e.clientY - r.top };
@@ -139,7 +146,14 @@ tick(); setInterval(tick, 1000);
   c.addEventListener('pointermove', move);
   for (const n of ['pointerup', 'pointercancel', 'lostpointercapture']) c.addEventListener(n, () => { down = false; last = null; });
   c.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); reveal(); } });
-  $('revealBtn').onclick = reveal; cover(); addEventListener('resize', cover);
+  $('revealBtn').onclick = () => reveal(); cover(); addEventListener('resize', cover);
+
+  /* auto open: heart on screen for ~2 seconds and nobody is scratching -> splash open */
+  const AUTO_OPEN_MS = 2000;
+  if ('IntersectionObserver' in window) new IntersectionObserver(es => {
+    clearTimeout(autoTimer);
+    if (es[0].isIntersecting && !done) autoTimer = setTimeout(function wait() { if (down) autoTimer = setTimeout(wait, 800); else reveal(); }, AUTO_OPEN_MS);
+  }, { threshold: .6 }).observe(card);
 })();
 
 /* ---------- events (cards + detail popup) ---------- */
@@ -151,7 +165,9 @@ $('eventGrid').onclick = ev => {
   const b = ev.target.closest('[data-i]'); if (!b) return; const e = I.events[+b.dataset.i], v = I.venues[e.venue];
   $('eventModal').style.setProperty('--c', e.color); $('mArt').style.setProperty('--c', e.color); $('mArt').innerHTML = art(e);
   $('mDate').textContent = e.date; $('mTitle').textContent = e.name; $('mTime').textContent = e.time + ' · IST'; $('mText').textContent = e.desc;
-  $('mVenue').textContent = v.addr; $('mMap').href = mapUrl(v); $('eventModal').showModal();
+  $('mVenue').textContent = v.addr; $('mMap').href = mapUrl(v);
+  $('mGcal').href = gcalUrl(e); $('mIcs').onclick = () => downloadIcs([e], e.name.replace(/\W+/g, '-').toLowerCase() + '.ics');
+  $('eventModal').showModal();
 };
 $('venueGrid').innerHTML = I.venues.map((v, i) => { const evs = I.events.filter(e => e.venue === i);
   const ds = [...new Set(evs.map(e => e.short.replace(/ \d{4}$/, '')))], mo = ds.map(d => d.split(' ')[1]);
@@ -194,3 +210,50 @@ rsvp.addEventListener('submit', e => { e.preventDefault(); const f = new FormDat
   wa(`RSVP for ${I.groom} & ${I.bride}'s wedding\nName: ${f.get('name')}\nResponse: ${f.get('attending')}` + (no ? '' : `\nGuests: ${f.get('guests')}`), rsvp); });
 $('wishForm').addEventListener('submit', e => { e.preventDefault(); const f = new FormData(e.target);
   wa(`Wishes for ${I.groom} & ${I.bride}\nFrom: ${f.get('name')}\n${f.get('message')}`, e.target); });
+
+/* ---------- auto scroll (tap the arrow button in the header; touching or scrolling the page pauses it) ---------- */
+(function () {
+  const btn = $('autoScroll'), SPEED = 50;          // pixels per second - lower = slower
+  let on = false, raf = 0, prev = 0, acc = 0;
+  function step(t) {
+    if (!on) return;
+    if (document.querySelector('dialog[open]')) return stop();
+    acc += SPEED * Math.min(t - prev, 64) / 1000; prev = t;
+    if (acc >= 1) { const px = Math.floor(acc); acc -= px; scrollBy(0, px); }
+    if (innerHeight + scrollY >= document.documentElement.scrollHeight - 2) return stop();
+    raf = requestAnimationFrame(step);
+  }
+  function start() { on = true; acc = 0; prev = performance.now(); document.documentElement.style.scrollBehavior = 'auto';
+    btn.setAttribute('aria-pressed', 'true'); btn.setAttribute('aria-label', 'Pause auto scroll'); raf = requestAnimationFrame(step); }
+  function stop() { on = false; cancelAnimationFrame(raf); document.documentElement.style.scrollBehavior = '';
+    btn.setAttribute('aria-pressed', 'false'); btn.setAttribute('aria-label', 'Start auto scroll'); }
+  btn.onclick = () => on ? stop() : start();
+  addEventListener('wheel', () => { if (on) stop(); }, { passive: true });
+  for (const ev of ['touchstart', 'mousedown', 'keydown']) addEventListener(ev, e => { if (on && !(e.target.closest && e.target.closest('#autoScroll'))) stop(); }, { passive: true });
+})();
+
+/* ---------- add to calendar (.ics file + Google Calendar link) ---------- */
+const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+function eventTimes(e) {
+  const d = e.short.match(/(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/), t = e.time.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+  if (!d || !t) return null;
+  const h = (+t[1] % 12) + (/pm/i.test(t[3]) ? 12 : 0);
+  const start = Date.UTC(+d[3], MONTHS.indexOf(d[2].toLowerCase()), +d[1], h, +t[2]) - 330 * 60000;   // India time = UTC+5:30
+  return [new Date(start), new Date(start + (e.hours || 3) * 3600000)];                                 // default length 3 hours (add hours: 4 to an event to change)
+}
+const stamp = d => d.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
+const icsEsc = s => String(s).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+function vevent(e) {
+  const tm = eventTimes(e); if (!tm) return '';
+  return ['BEGIN:VEVENT', `UID:${e.name.replace(/\W+/g, '-').toLowerCase()}-${stamp(tm[0])}@wedding-invite`, `DTSTAMP:${stamp(new Date())}`,
+    `DTSTART:${stamp(tm[0])}`, `DTEND:${stamp(tm[1])}`, `SUMMARY:${icsEsc(`${e.name} - ${I.groom} & ${I.bride}`)}`,
+    `LOCATION:${icsEsc(I.venues[e.venue].addr)}`, `DESCRIPTION:${icsEsc(e.desc || '')}`, 'END:VEVENT'].join('\r\n');
+}
+function downloadIcs(list, name) {
+  const body = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Wedding Invitation//EN', 'CALSCALE:GREGORIAN', ...list.map(vevent).filter(Boolean), 'END:VCALENDAR'].join('\r\n');
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([body], { type: 'text/calendar;charset=utf-8' })); a.download = name;
+  document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+const gcalUrl = e => { const tm = eventTimes(e); return tm ? 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(`${e.name} - ${I.groom} & ${I.bride}`)
+  + `&dates=${stamp(tm[0])}/${stamp(tm[1])}&details=${encodeURIComponent(e.desc || '')}&location=${encodeURIComponent(I.venues[e.venue].addr)}` : '#'; };
+$('calAll').onclick = () => downloadIcs(I.events, 'wedding-events.ics');

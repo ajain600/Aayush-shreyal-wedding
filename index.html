@@ -40,7 +40,7 @@
     <p class="eyebrow">Together with our families</p>
     <h1><span id="eG"></span><i>&amp;</i><span id="eB"></span></h1>
     <div class="rule">✦</div>
-    <p class="entrance-date" id="eDate"></p>
+    
     <button class="primary" id="openInvite" type="button">Open Invitation <span aria-hidden="true">↗</span></button>
     <p class="entrance-foot">With love, we invite you</p>
   </div>
@@ -52,6 +52,7 @@
   <a href="#home" class="monogram" id="mono" aria-label="Home"></a>
   <nav aria-label="Main"><a href="#gallery" data-nav="gallery">Our moments</a><a href="#events">Celebrations</a><a href="#venue">Venues</a><a href="#rsvp">RSVP</a></nav>
   <div class="hc">
+    <button id="autoScroll" class="ib" type="button" aria-label="Start auto scroll" aria-pressed="false" title="Auto scroll"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path class="dn" d="m6 7 6 6 6-6"/><path class="dn" d="m6 13 6 6 6-6"/><path class="ps" d="M9 6v12M15 6v12"/></svg></button>
     <button id="music" class="ib" type="button" aria-label="Turn music on" aria-pressed="false" data-playing="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path class="on" d="M15 9a5 5 0 0 1 0 6m3-9a9 9 0 0 1 0 12"/><path class="off" d="m16 9 5 6m0-6-5 6"/></svg></button>
     <button id="menuBtn" class="ib" type="button" aria-label="Open menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </div>
@@ -65,7 +66,7 @@
       <p class="eyebrow">We are getting married</p>
       <div class="couple"><h2 id="gName"></h2><p id="gPar"></p><i>&amp;</i><h2 id="bName"></h2><p id="bPar"></p></div>
       <p class="blessing">Your presence will make our special day even more memorable.</p>
-      <p class="formal-date" id="heroDate"></p>
+      
       <a class="text-link" href="#reveal">Begin our story ↓</a>
     </div>
   </section>
@@ -83,6 +84,7 @@
       <p class="eyebrow">Counting down to our forever</p>
       <div class="countdown" id="countdown"></div>
       <p class="tiny" id="cdLine"></p>
+      <div style="margin-top:22px"><button class="primary" id="calAll" type="button">Add all events to calendar</button></div>
     </div>
   </section>
 
@@ -155,7 +157,9 @@
 <dialog id="eventModal" aria-labelledby="mTitle"><button class="close" data-close aria-label="Close event details">×</button>
   <div class="event-art" id="mArt"></div>
   <div class="modal-copy"><p class="eyebrow" id="mDate"></p><h2 id="mTitle"></h2><p id="mTime"></p><p class="intro" id="mText"></p><strong id="mVenue"></strong>
-  <a id="mMap" class="primary" target="_blank" rel="noopener">View on Google Maps ↗</a></div></dialog>
+  <a id="mMap" class="primary" target="_blank" rel="noopener">View on Google Maps ↗</a>
+  <a id="mGcal" class="text-link" target="_blank" rel="noopener">Add to Google Calendar ↗</a>
+  <button id="mIcs" class="text-link" type="button">Download for iPhone / Outlook (.ics)</button></div></dialog>
 <dialog id="lightbox" aria-label="Photograph"><button class="close" data-close aria-label="Close photograph">×</button>
   <img id="lbImg" alt=""><p id="lbCap"></p>
   <div class="lbc"><button class="ib" id="lbPrev" aria-label="Previous photograph">←</button><span id="lbCount"></span><button class="ib" id="lbNext" aria-label="Next photograph">→</button></div></dialog>

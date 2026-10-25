@@ -188,3 +188,15 @@ dialog::backdrop{background:rgba(40,12,16,.72)}
 @keyframes cf{to{transform:translate(var(--x),var(--y)) rotate(var(--r));opacity:0}}
 #ytbox{position:fixed;left:-9999px;top:0;width:200px;height:200px}
 @media (prefers-reduced-motion:reduce){*{transition-duration:.01s!important;transition-delay:0s!important;animation:none!important;scroll-behavior:auto!important}}
+
+/* ---------- auto-scroll button, heart splash ---------- */
+#autoScroll .ps{display:none}#autoScroll[aria-pressed=true] .ps{display:inline}#autoScroll[aria-pressed=true] .dn{display:none}
+#autoScroll[aria-pressed=true]{background:var(--wine);color:#fff7e5}
+#scratchCanvas{transition:opacity .9s,transform 1s cubic-bezier(.2,.7,.2,1),filter 1s}
+.scratch-card.done canvas{opacity:0;transform:scale(1.35) rotate(5deg);filter:blur(8px);pointer-events:none}
+.scratch-card.splash{animation:heartPop 1s cubic-bezier(.2,1.5,.4,1)}
+@keyframes heartPop{0%{transform:scale(.94)}55%{transform:scale(1.09)}100%{transform:scale(1)}}
+.scratch-card.splash .date-reveal{animation:dateIn .9s .2s both}
+@keyframes dateIn{from{opacity:0;transform:translateY(12px) scale(.92)}to{opacity:1;transform:none}}
+.ring{position:fixed;z-index:70;width:24px;height:24px;margin:-12px 0 0 -12px;border:3px solid #d9b45f;border-radius:50%;pointer-events:none;animation:ring 1.3s ease-out both}
+@keyframes ring{from{transform:scale(1);opacity:.9}to{transform:scale(22);opacity:0}}
