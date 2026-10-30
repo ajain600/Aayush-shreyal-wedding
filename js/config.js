@@ -3,8 +3,8 @@ window.INVITE = {
   groom: "Aayush",
   bride: "Shreyal",
   invocation: "श्री महावीराय नमः",
-  groomParents: "S/o Shri Mukesh Jain & Smt. Anju Jain",
-  brideParents: "D/o Shri Manish Jain & Smt. Seema Jain",
+  groomParents: "S/o Shri Mukesh Saraf & Smt. Anju Saraf",
+  brideParents: "D/o Shri Manish Modi & Smt. Seema Modi",
   dateDisplay: "24 November 2026",
   reveal: { day: "Tuesday", date: "24th November", year: "2026", time: "8:00 PM onwards" },
   countdownTo: "2026-11-24T19:00:00+05:30",   // the wedding (Barat)
