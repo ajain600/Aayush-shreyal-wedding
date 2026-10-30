@@ -4,7 +4,7 @@ window.INVITE = {
   bride: "Shreyal",
   invocation: "श्री महावीराय नमः",
   groomParents: "S/o Shri Mukesh Jain & Smt. Anju Jain",
-  brideParents: "D/o Shri Manish Jain	 & Smt. Seema Jain",
+  brideParents: "D/o Shri Manish Jain & Smt. Seema Jain",
   dateDisplay: "24 November 2026",
   reveal: { day: "Tuesday", date: "24th November", year: "2026", time: "8:00 PM onwards" },
   countdownTo: "2026-11-24T19:00:00+05:30",   // the wedding (Barat)
@@ -35,13 +35,10 @@ window.INVITE = {
   },
 
 
-<<<<<<< HEAD
   /* Auto scroll: starts by itself after the invitation opens; touching the screen pauses it and it resumes after resumeAfter ms.
      speed = pixels per second (lower = slower). Set auto: false if you only want the button. */
-  autoScroll: { auto: true, speed: 70, startDelay: 2500, resumeAfter: 5000 },
+  autoScroll: { auto: true, speed: 45, startDelay: 2500, resumeAfter: 5000 },
 
-=======
->>>>>>> parent of 45e9297 (Update)
   music: { youtubeId: "", file: "media/background-music.mp3" },
 
    photos: [
@@ -50,7 +47,8 @@ window.INVITE = {
   ],
 
   venues: [
-    { name: "Station Road, Mungaoli", addr: "103/105 Station Road, Mungaoli, Madhya Pradesh", q: "103/105 Station Road, Mungaoli" },
+    { name: "Station Road, Mungaoli", addr: "103/105 Station Road, Mungaoli, Madhya Pradesh", q: "103/105 Station Road, Mungaoli",
+      link: "https://www.google.com/maps/place/Mungaoli,+Madhya+Pradesh/@24.4087591,78.0963563,2985m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3979783dea8651cf:0x226400314df5eb65!8m2!3d24.4140762!4d78.0937171!16zL20vMGY1cHBq" },
     { name: "Silk Route, Chanderi",   addr: "Silk Route, Chanderi, Madhya Pradesh",            q: "Silk Route, Chanderi" }
   ],
 
