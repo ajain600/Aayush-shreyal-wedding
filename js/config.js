@@ -37,7 +37,7 @@ window.INVITE = {
 
   /* Auto scroll: starts by itself after the invitation opens; touching the screen pauses it and it resumes after resumeAfter ms.
      speed = pixels per second (lower = slower). Set auto: false if you only want the button. */
-  autoScroll: { auto: true, speed:45 startDelay: 2500, resumeAfter: 5000 },
+  autoScroll: { auto: true, speed: 70, startDelay: 2500, resumeAfter: 5000 },
 
   music: { youtubeId: "", file: "media/background-music.mp3" },
 
