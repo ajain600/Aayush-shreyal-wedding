@@ -24,19 +24,20 @@ $('invocation').textContent = I.invocation ? `॥ ${I.invocation} ॥` : '';
 
 /* ---------- your media (every slot is optional) ---------- */
 /* iPhone/iPad Safari only autoplays a video that is muted + playsinline (as attributes, not just properties) */
-function mkVideo(loop) {
+function mkVideo(loop, preload) {
   const v = document.createElement('video');
-  v.muted = v.defaultMuted = true; v.playsInline = true; v.loop = loop; v.preload = 'auto'; v.disablePictureInPicture = true;
+  v.muted = v.defaultMuted = true; v.playsInline = true; v.loop = loop; v.preload = preload || 'auto'; v.disablePictureInPicture = true;
   for (const a of ['muted', 'playsinline', 'webkit-playsinline']) v.setAttribute(a, '');
   v.setAttribute('aria-hidden', 'true'); return v;
 }
-function bg(src, poster, onReady, autoplay) {
+function bg(src, poster, onReady, autoplay, defer) {
   if (!src) return null;
   if (isImg(src)) { const im = new Image(); im.className = 'bgv'; im.alt = ''; im.onload = () => onReady(im); im.src = src; return im; }
-  const v = mkVideo(true); v.className = 'bgv'; if (poster) v.poster = poster; if (autoplay) v.autoplay = true;
+  const v = mkVideo(true, defer ? 'none' : 'auto'); v.className = 'bgv'; if (poster) v.poster = poster; if (autoplay) v.autoplay = true;
   let ready = false; const ok = () => { if (!ready) { ready = true; onReady(v); } };
   for (const ev of ['loadedmetadata', 'loadeddata', 'canplay']) v.addEventListener(ev, ok);   // iOS does not always fire loadeddata
   v.addEventListener('error', () => { v.remove(); if (v === entrance) opening.classList.remove('has-video'); });
+  if (defer) { v._src = src; return v; }   // downloaded later (after the invitation opens) so the first screen stays fast
   v.src = src; v.load(); return v;
 }
 const opening = $('opening');
@@ -47,27 +48,35 @@ function kick() { if (entrance && entrance.play && entrance.paused && !reduced &
 for (const ev of ['touchstart', 'pointerdown', 'click']) document.addEventListener(ev, kick, { passive: true });
 
 let tVid = null;
+const RATE = Math.max(0.5, Math.min(M.transitionSpeed || 1, 4));   // gate-opening video speed (config: media.transitionSpeed)
+function loadTransition() { if (tVid && !tVid.getAttribute('src')) { tVid.preload = 'auto'; tVid.src = M.transitionVideo; tVid.load(); } }
 if (M.transitionVideo && !isImg(M.transitionVideo)) {
-  tVid = mkVideo(false); tVid.id = 'tVid'; tVid.style.visibility = 'hidden';
-  if (M.transitionPoster) tVid.poster = M.transitionPoster; tVid.src = M.transitionVideo; opening.append(tVid);
+  tVid = mkVideo(false, 'none'); tVid.id = 'tVid'; tVid.style.visibility = 'hidden';
+  if (M.transitionPoster) tVid.poster = M.transitionPoster; opening.append(tVid);
+  /* download the gate-opening video only after the intro loop is playing (or shortly after the page has loaded),
+     so the two videos do not fight for bandwidth and the first screen appears quickly */
+  if (entrance && entrance.addEventListener) entrance.addEventListener('playing', () => setTimeout(loadTransition, 400), { once: true });
+  if (document.readyState === 'complete') setTimeout(loadTransition, 1500); else addEventListener('load', () => setTimeout(loadTransition, 1500));
 }
 
 const home = $('home');
-const garden = bg(M.gardenVideo, M.gardenPoster, el => { home.classList.add('has-bg'); syncGarden(); }, false);
+const garden = bg(M.gardenVideo, M.gardenPoster, el => { home.classList.add('has-bg'); syncGarden(); }, false, true);
 if (garden) { home.prepend(garden); if (garden.pause) garden.pause(); }
 const heroImg = M.heroImage || M.gardenPoster;
-if (heroImg) { const im = new Image(); im.onload = () => { home.style.background = `linear-gradient(rgba(251,245,232,.2),rgba(251,245,232,.2)), url("${heroImg}") center/cover no-repeat`; home.classList.add('has-bg'); }; im.src = heroImg; }
+if (heroImg) { const im = new Image(); im.onload = () => { home.style.background = `linear-gradient(rgba(251,245,232,.2),rgba(251,245,232,.2)), url("${heroImg}") center/cover no-repeat`; home.classList.add('has-bg'); }; im.fetchPriority = 'low'; im.src = heroImg; }
 let gardenVisible = true, siteOpen = false;
 function syncGarden() { if (!garden || !garden.play) return; if (siteOpen && gardenVisible && !document.hidden && !reduced) garden.play().catch(() => {}); else garden.pause(); }
 if ('IntersectionObserver' in window) new IntersectionObserver(es => { gardenVisible = es[0].isIntersecting; syncGarden(); }).observe(home);
 document.addEventListener('visibilitychange', () => { syncGarden(); if (!document.hidden) kick(); });
 
 /* ---------- petals + confetti ---------- */
-if (!reduced) {
+function makePetals() {
+  if (reduced) return;
   const tones = ['#a52a3b', '#c8394a', '#e8a0a8'];
-  $('petalLayer').innerHTML = Array.from({ length: 22 }, (_, i) =>
+  $('petalLayer').innerHTML = Array.from({ length: innerWidth < 700 ? 12 : 20 }, (_, i) =>
     `<span class="petal-fall" style="left:${Math.random() * 100}%;--t:${13 + Math.random() * 13}s;--d:${-Math.random() * 26}s;--dr:${-65 + Math.random() * 130}px"><i class="petal" style="--s:${7 + Math.random() * 8}px;--pc:${tones[i % 3]}"></i></span>`).join('');
 }
+document.addEventListener('inviteopen', makePetals, { once: true });   // petals start after the invitation opens (keeps the first screen light)
 function confetti(x, y) {
   if (reduced) return;
   const b = document.createElement('div'); b.className = 'confetti'; b.style.left = x + 'px'; b.style.top = y + 'px';
@@ -106,7 +115,8 @@ function finish() {
   if (opened) return; opened = true; clearTimeout(timer);
   if (tVid) tVid.pause(); if (entrance && entrance.pause) entrance.pause(); clearTimeout(timer);
   opening.classList.add('open'); $('site').inert = false; document.body.classList.remove('locked'); scrollTo(0, 0);
-  siteOpen = true; syncGarden(); setTimeout(() => opening.remove(), 1000);
+  siteOpen = true; if (garden && garden._src && !garden.getAttribute('src')) { garden.src = garden._src; garden.load(); }   // garden video starts downloading now
+  syncGarden(); setTimeout(() => opening.remove(), 1000);
   document.dispatchEvent(new Event('inviteopen'));
 }
 $('openInvite').onclick = () => {
@@ -117,10 +127,11 @@ $('openInvite').onclick = () => {
   if (tVid && !reduced) {
     /* play() is called right here, inside the tap - this is what makes it work on iPhone */
     let started = false;
+    loadTransition(); tVid.defaultPlaybackRate = tVid.playbackRate = RATE;   // faster gate opening
     tVid.onended = finish; tVid.onerror = fallback;
-    tVid.addEventListener('playing', () => { started = true; tVid.style.visibility = 'visible'; if (entrance && entrance.pause) entrance.pause();
-      clearTimeout(timer); timer = setTimeout(finish, ((tVid.duration || 12) + 3) * 1000); }, { once: true });
-    timer = setTimeout(() => { if (!started) finish(); }, 6000);       // video never started -> just open the site
+    tVid.addEventListener('playing', () => { started = true; tVid.style.visibility = 'visible'; tVid.playbackRate = RATE; if (entrance && entrance.pause) entrance.pause();
+      clearTimeout(timer); timer = setTimeout(finish, ((tVid.duration || 12) / RATE + 3) * 1000); }, { once: true });
+    timer = setTimeout(() => { if (!started) finish(); }, 8000);       // video never started -> just open the site
     const p = tVid.play(); if (p && p.catch) p.catch(fallback);        // blocked (e.g. iPhone Low Power Mode) -> zoom animation instead
   } else fallback();
 };
@@ -290,3 +301,20 @@ $('wishForm').addEventListener('submit', e => { e.preventDefault(); const f = ne
   document.addEventListener('visibilitychange', () => { if (document.hidden) { if (running) pause(true); } else bump(); });
   document.addEventListener('inviteopen', () => { opened = true; if (cfg.auto && !reduced) setTimeout(() => { if (!manualOff && !touching) start(); }, cfg.startDelay); });
 })();
+
+/* ---------- ?debug : open  yourdomain.com/?debug  to see why a video / the music is not loading ---------- */
+if (/[?&]debug\b/.test(location.search)) {
+  const box = document.createElement('pre');
+  box.style.cssText = 'position:fixed;z-index:99;left:8px;right:8px;bottom:8px;margin:0;padding:10px;background:#000d;color:#9f9;font:12px/1.4 monospace;white-space:pre-wrap;max-height:45vh;overflow:auto';
+  document.body.append(box); const log = s => { box.textContent += s + '\n'; };
+  const mp4 = document.createElement('video');
+  log('this phone can play: H.264 mp4 = ' + (mp4.canPlayType('video/mp4; codecs="avc1.42E01E"') || 'NO') + ' | H.265/HEVC = ' + (mp4.canPlayType('video/mp4; codecs="hvc1"') || 'no') + ' | webm = ' + (mp4.canPlayType('video/webm') || 'no'));
+  for (const [label, src] of [['intro loop video', M.entranceVideo], ['gate-opening video', M.transitionVideo], ['garden video', M.gardenVideo], ['music', I.music.file]]) {
+    if (!src) continue;
+    fetch(src, { method: 'HEAD', cache: 'no-store' }).then(r => log(`${label}: ${src} -> HTTP ${r.status} ${r.ok ? 'OK' : 'NOT FOUND / BLOCKED'}, ${r.headers.get('content-type') || '?'}, ${r.headers.get('content-length') ? (r.headers.get('content-length') / 1048576).toFixed(1) + ' MB' : 'size unknown'}`))
+      .catch(e => log(`${label}: ${src} -> could not fetch (${e.message})`));
+  }
+  const watch = (v, label) => v && v.addEventListener && (v.addEventListener('error', () => log(`${label}: ERROR code ${v.error && v.error.code} (3 or 4 = file damaged or format/codec not supported - re-encode as H.264)`)),
+    v.addEventListener('playing', () => log(`${label}: playing`)));
+  watch(entrance, 'intro loop video'); watch(tVid, 'gate-opening video'); watch(garden, 'garden video');
+}

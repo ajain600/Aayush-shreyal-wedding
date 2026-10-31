@@ -3,8 +3,8 @@ window.INVITE = {
   groom: "Aayush",
   bride: "Shreyal",
   invocation: "श्री महावीराय नमः",
-  groomParents: "S/o Shri Mukesh Saraf & Smt. Anju Saraf",
-  brideParents: "D/o Shri Manish Modi & Smt. Seema Modi",
+  groomParents: "S/o Shri Mukesh Jain & Smt. Anju Jain",
+  brideParents: "D/o Shri Manish Jain & Smt. Seema Jain",
   dateDisplay: "24 November 2026",
   reveal: { day: "Tuesday", date: "24th November", year: "2026", time: "8:00 PM onwards" },
   countdownTo: "2026-11-24T19:00:00+05:30",   // the wedding (Barat)
@@ -23,6 +23,7 @@ window.INVITE = {
     entrancePoster: "images/entrance-video-poster.jpg",      // JPG shown while the intro video loads
     transitionVideo: "media/palace-opening-transition.mp4",  // optional second video that plays after "Open Invitation"
     transitionPoster: "images/transition-poster.jpg",
+    transitionSpeed: 1.7,                                    // gate-opening video speed: 1 = normal, 1.7 = a lot faster, 2 = twice as fast
     gardenVideo: "media/formal-garden-background.mp4",       // optional video behind "We are getting married"
     gardenPoster: "images/formal-garden-poster.jpg",         // JPG background behind "We are getting married" (also the video's poster)
     symbol: "images/swastik.png",                              // symbol at the top of the hero (replaces ganeshji.png)
@@ -37,7 +38,7 @@ window.INVITE = {
 
   /* Auto scroll: starts by itself after the invitation opens; touching the screen pauses it and it resumes after resumeAfter ms.
      speed = pixels per second (lower = slower). Set auto: false if you only want the button. */
-  autoScroll: { auto: true, speed: 45, startDelay: 2500, resumeAfter: 5000 },
+  autoScroll: { auto: true, speed: 70, startDelay: 2500, resumeAfter: 5000 },
 
   music: { youtubeId: "", file: "media/background-music.mp3" },
 
@@ -48,7 +49,7 @@ window.INVITE = {
 
   venues: [
     { name: "Station Road, Mungaoli", addr: "103/105 Station Road, Mungaoli, Madhya Pradesh", q: "103/105 Station Road, Mungaoli",
-      link: "https://www.google.com/maps/place/Mungaoli,+Madhya+Pradesh/@24.4087591,78.0963563,2985m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3979783dea8651cf:0x226400314df5eb65!8m2!3d24.4140762!4d78.0937171!16zL20vMGY1cHBq" },
+      link: "https://maps.app.goo.gl/GUAk7GgVAKHmEEsR9" },
     { name: "Silk Route, Chanderi",   addr: "Silk Route, Chanderi, Madhya Pradesh",            q: "Silk Route, Chanderi" }
   ],
 
