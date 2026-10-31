@@ -47,24 +47,19 @@ window.INVITE = {
    
   ],
 
-  venues: [
-    { name: "Station Road, Mungaoli", addr: "103/105 Station Road, Mungaoli, Madhya Pradesh", q: "103/105 Station Road, Mungaoli",
-      link: "https://maps.app.goo.gl/GUAk7GgVAKHmEEsR9" },
+    venues: [
     { name: "Silk Route, Chanderi",   addr: "Silk Route, Chanderi, Madhya Pradesh",            q: "Silk Route, Chanderi" }
   ],
 
   /* image: your own illustration/photo for each card (portrait, about 4:5). Missing file = built-in Hindi-title card. */
   events: [
-    { hi: "मेहंदी", name: "Mehndi Ceremony", date: "Sunday, 22 November 2026",  short: "22 November 2026", time: "2:00 PM onwards",  venue: 0, color: "#2f5d3a", image: "images/mehndi-portrait.jpg",
-      desc: "An afternoon of mehndi, music and laughter as our celebrations begin." },
-    { hi: "संगीत",  name: "Sangeet Night",   date: "Monday, 23 November 2026",  short: "23 November 2026", time: "7:00 PM onwards",  venue: 1, color: "#5b2a6e", image: "images/sangeet-portrait.jpg",
+    { hi: "संगीत",  name: "Sangeet Night",   date: "Monday, 23 November 2026",  short: "23 November 2026", time: "7:00 PM onwards",  venue: 0, color: "#5b2a6e", image: "images/sangeet-portrait.jpg",
       desc: "An evening of songs, dance and joy with family and friends." },
-    { hi: "हल्दी",  name: "Haldi Ceremony",  date: "Tuesday, 24 November 2026", short: "24 November 2026", time: "10:00 AM onwards", venue: 1, color: "#a8741a", image: "images/haldi-portrait.jpg",
+    { hi: "हल्दी",  name: "Haldi Ceremony",  date: "Tuesday, 24 November 2026", short: "24 November 2026", time: "10:00 AM onwards", venue: 0, color: "#a8741a", image: "images/haldi-portrait.jpg",
       desc: "Haldi, laughter and heartfelt blessings on the morning of the wedding." },
-    { hi: "फेरे",  name: "Wedding Ceremony",  date: "Tuesday, 24 November 2026", short: "24 November 2026", time: "02:00 PM onwards", venue: 1, color: "#a8741a", image: "images/Phere-portrait.jpg",
+    { hi: "फेरे",  name: "Wedding Ceremony",  date: "Tuesday, 24 November 2026", short: "24 November 2026", time: "02:00 PM onwards", venue: 0, color: "#a8741a", image: "images/Phere-portrait.jpg",
       desc: "Two souls, one sacred fire, and a lifetime of togetherness — the Phere." },
-
-    { hi: "बारात",  name: "Barat",           date: "Tuesday, 24 November 2026", short: "24 November 2026", time: "7:00 PM onwards",  venue: 1, color: "#741e2c", image: "images/barat-portrait.jpg",
+    { hi: "बारात",  name: "Barat",           date: "Tuesday, 24 November 2026", short: "24 November 2026", time: "7:00 PM onwards",  venue: 0, color: "#741e2c", image: "images/barat-portrait.jpg",
       desc: "Join us as the baraat arrives and our wedding celebrations begin." }
   ]
 };
