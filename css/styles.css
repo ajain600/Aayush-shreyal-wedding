@@ -205,3 +205,31 @@ dialog::backdrop{background:rgba(40,12,16,.72)}
 .opening .bgv{background:#ece0c9;-webkit-transform:translateZ(0)}
 #tVid{background:#ece0c9;-webkit-transform:translateZ(0)}
 .event-details .cal{margin-top:10px}
+
+/* ---------- meet the groom & bride ---------- */
+.duo{--sp:50%;--gf:28% 50%;--bf:72% 50%;position:relative;max-width:900px;margin:34px auto 10px;aspect-ratio:16/9;opacity:0;transform:translateY(30px) scale(.97);transition:opacity 1s,transform 1s cubic-bezier(.2,.8,.2,1)}
+.duo.in{opacity:1;transform:none}
+.duo-frame{position:absolute;inset:0;overflow:hidden;border:2px solid var(--gold);background:#2b1e21;box-shadow:0 18px 40px #442a2b33}
+.duo-frame:before{content:"";position:absolute;inset:8px;border:1px solid #fff7e5aa;z-index:3;pointer-events:none}
+.duo-zoom{position:absolute;inset:0;transition:transform 1.1s cubic-bezier(.2,.8,.2,1),filter .8s}
+.duo-photo{width:100%;height:100%;object-fit:cover;display:block;animation:kb 16s ease-in-out infinite alternate}
+@keyframes kb{from{transform:scale(1)}to{transform:scale(1.06)}}
+.duo-shade{position:absolute;top:0;bottom:0;background:#1b0a0e;opacity:0;transition:opacity .6s;z-index:2;pointer-events:none}
+.duo-shade.g{left:0;width:var(--sp)}.duo-shade.b{left:var(--sp);right:0}
+/* only one photo: zoom into whoever is hovered / tapped */
+.duo:not(.has-cut).on-g .duo-zoom{transform:scale(1.4);transform-origin:var(--gf)}
+.duo:not(.has-cut).on-b .duo-zoom{transform:scale(1.4);transform-origin:var(--bf)}
+.duo.on-g .duo-shade.b,.duo.on-b .duo-shade.g{opacity:.5}
+/* with cut-out PNGs: the person steps out of the frame */
+.duo-cut{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:3;pointer-events:none;transition:transform .7s cubic-bezier(.2,1.4,.4,1),filter .6s}
+.duo-cut.g{transform-origin:var(--gf)}.duo-cut.b{transform-origin:var(--bf)}
+.duo.has-cut.on-g .duo-cut.g,.duo.has-cut.on-b .duo-cut.b{transform:scale(1.16) translateY(-3%);filter:drop-shadow(0 22px 22px rgba(0,0,0,.5))}
+.duo.has-cut.on-g .duo-cut.b,.duo.has-cut.on-b .duo-cut.g{filter:brightness(.6)}
+.duo.has-cut.on-g .duo-zoom,.duo.has-cut.on-b .duo-zoom{filter:brightness(.6) saturate(.8)}
+.duo-zone{position:absolute;top:0;bottom:0;z-index:4;background:none;border:0;padding:0;cursor:pointer}
+.duo-zone.g{left:0;width:var(--sp)}.duo-zone.b{left:var(--sp);right:0}
+.duo-name{position:absolute;left:50%;bottom:18px;transform:translate(-50%,14px);opacity:0;transition:opacity .5s,transform .5s;background:rgba(251,245,232,.94);color:var(--wine);padding:8px 22px;border:1px solid var(--gold);text-align:center;white-space:nowrap}
+.duo-name b{display:block;font:600 1.6rem/1.1 var(--serif)}
+.duo-name small{font:500 .65rem var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.duo.on-g .duo-zone.g .duo-name,.duo.on-b .duo-zone.b .duo-name{opacity:1;transform:translate(-50%,0)}
+@media(max-width:600px){.duo-name{padding:6px 14px;bottom:10px}.duo-name b{font-size:1.25rem}}

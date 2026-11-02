@@ -42,10 +42,14 @@ window.INVITE = {
 
   music: { youtubeId: "", file: "media/background-music.mp3" },
 
-   photos: [
-    { src: "images/imagesgallery-01.jpg", caption: "Our little moments" },
-   
-  ],
+     couple: {
+    photo: "images/couple-landscape.jpg",     // ONE landscape photo of both of you (16:9, about 1600x900, under 300 KB)
+    groomCut: "images/groom-cutout.png",      // optional PNG, same size as the photo, transparent except the groom
+    brideCut: "images/bride-cutout.png",      // optional PNG, same size as the photo, transparent except the bride
+    split: "50%",                              // where the photo divides: groom on the left of this line, bride on the right
+    groomFocus: "28% 50%", brideFocus: "72% 50%",   // used when there are no cut-outs: the spot that zooms in for each of you
+    eyebrow: "Meet the couple", title: "Our groom & bride", intro: "Hover over us, or tap, to say hello."
+  },
 
     venues: [
     { name: "Silk Route, Chanderi",   addr: "Silk Route, Chanderi, Madhya Pradesh",            q: "Silk Route, Chanderi" }

@@ -222,13 +222,47 @@ $('eventGrid').onclick = ev => {
 $('venueGrid').innerHTML = I.venues.map((v, i) => { const evs = I.events.filter(e => e.venue === i);
   const ds = [...new Set(evs.map(e => e.short.replace(/ \d{4}$/, '')))], mo = ds.map(d => d.split(' ')[1]);
   const when = ds.length > 1 && mo.every(m => m === mo[0]) ? `${ds[0].split(' ')[0]} – ${ds[ds.length - 1]}` : ds.join(' & ');
-  return `<article class="venue-card"><span class="venue-number">0${i + 1}</span><p class="eyebrow">${when}</p><h3>${v.name}</h3><p>${v.addr}</p>
+  return `<article class="venue-card"><p class="eyebrow">${when}</p><h3>${v.name}</h3><p>${v.addr}</p>
   <p class="ve">${evs.map(e => e.name.replace(/ (Ceremony|Night)$/, '')).join(' · ')}</p><a class="primary" target="_blank" rel="noopener" href="${mapUrl(v)}">View on Google Maps ↗</a></article>`; }).join('');
-
+/* ---------- meet the groom & bride (one landscape photo; each of you pops out when hovered / tapped) ---------- */
+(function () {
+  const C = I.couple; if (!C || !C.photo) return;
+  const g = $('gallery');
+  if (C.eyebrow) g.querySelector('.eyebrow').textContent = C.eyebrow;
+  if (C.title) g.querySelector('h2').textContent = C.title;
+  if (C.intro) g.querySelector('.intro').textContent = C.intro;
+  const cut = (side, src) => src ? `<img class="duo-cut ${side}" src="${src}" alt="" onload="this.parentNode.classList.add('has-cut')" onerror="this.remove()">` : '';
+  const zone = (side, name, role) => `<button class="duo-zone ${side}" type="button" aria-label="${name}"><span class="duo-name"><b>${name}</b><small>${role}</small></span></button>`;
+  $('duoHost').innerHTML = `<div class="duo" id="duo" style="--sp:${C.split || '50%'};--gf:${C.groomFocus || '28% 50%'};--bf:${C.brideFocus || '72% 50%'}">
+    <div class="duo-frame"><div class="duo-zoom"><img class="duo-photo" src="${C.photo}" alt="${I.groom} and ${I.bride}" decoding="async"></div><i class="duo-shade g"></i><i class="duo-shade b"></i></div>
+    ${cut('g', C.groomCut)}${cut('b', C.brideCut)}
+    ${zone('g', I.groom, C.groomRole || 'The groom')}${zone('b', I.bride, C.brideRole || 'The bride')}</div>`;
+  const duo = $('duo'); let side = '', auto = true, timer = 0, seq = 0;
+  const set = s => { side = s; duo.classList.toggle('on-g', s === 'g'); duo.classList.toggle('on-b', s === 'b'); };
+  for (const z of duo.querySelectorAll('.duo-zone')) {
+    const s = z.classList.contains('g') ? 'g' : 'b';
+    z.addEventListener('pointerenter', e => { if (e.pointerType === 'mouse') { auto = false; set(s); } });
+    z.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') set(''); });
+    z.addEventListener('click', e => { auto = false; set(e.pointerType === 'mouse' ? s : (side === s ? '' : s)); });   // phones: tap to pop out, tap again to close
+    z.addEventListener('focus', () => { if (z.matches(':focus-visible')) set(s); }); z.addEventListener('blur', () => set(''));   // keyboard users
+  }
+  document.addEventListener('pointerdown', e => { if (!duo.contains(e.target)) set(''); });
+  /* shows itself with a gentle self-demo while it is on screen, until someone touches it */
+  if (!('IntersectionObserver' in window)) { duo.classList.add('in'); return; }
+  new IntersectionObserver(es => {
+    clearInterval(timer);
+    if (es[0].isIntersecting) { duo.classList.add('in'); if (!reduced) timer = setInterval(() => { if (!auto) return clearInterval(timer); set(['g', 'b', ''][seq++ % 3]); }, 2600); }
+    else if (auto) set('');
+  }, { threshold: .5 }).observe(duo);
+})();
 /* ---------- gallery + lightbox (hidden until photos are added) ---------- */
 (function () {
   const P = (I.photos || []).map(p => typeof p === 'string' ? { src: p, caption: '' } : p);
-  if (!P.length) { document.querySelectorAll('[data-nav=gallery],#gallery').forEach(n => n.remove()); return; }
+    if (!P.length) {
+    if (I.couple && I.couple.photo) { $('galleryTrack').remove(); $('galleryTip').remove(); }   // only the groom & bride feature, no photo grid
+    else document.querySelectorAll('[data-nav=gallery],#gallery').forEach(n => n.remove());
+    return;
+  }
   let k = 0;
   const show = n => { k = (n + P.length) % P.length; $('lbImg').src = P[k].src; $('lbImg').alt = P[k].caption || 'Photograph'; $('lbCap').textContent = P[k].caption || ''; $('lbCount').textContent = `${k + 1} / ${P.length}`; if (!$('lightbox').open) $('lightbox').showModal(); };
   $('galleryTrack').innerHTML = P.map((p, i) => `<button type="button" class="photo" data-i="${i}" style="border:1px solid #dfcdb0"><img loading="lazy" src="${p.src}" alt="${p.caption || 'Photograph ' + (i + 1)}"><span>${p.caption || ''}</span></button>`).join('');
