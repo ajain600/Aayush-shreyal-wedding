@@ -57,7 +57,7 @@ window.INVITE = {
 
   /* image: your own illustration/photo for each card (portrait, about 4:5). Missing file = built-in Hindi-title card. */
   events: [
-    { hi: "संगीत",  name: "Sangeet Night",   date: "Monday, 23 November 2026",  short: "23 November 2026", time: "7:00 PM onwards",  venue: 0, color: "#5b2a6e", image: "images/sangeet-portrait.jpg",
+    { hi: "संगीत",  name: "Ring Ceremony & Sangeet Night",   date: "Monday, 23 November 2026",  short: "23 November 2026", time: "7:00 PM onwards",  venue: 0, color: "#5b2a6e", image: "images/sangeet-portrait.jpg",
       desc: "An evening of songs, dance and joy with family and friends." },
     { hi: "हल्दी",  name: "Haldi Ceremony",  date: "Tuesday, 24 November 2026", short: "24 November 2026", time: "10:00 AM onwards", venue: 0, color: "#a8741a", image: "images/haldi-portrait.jpg",
       desc: "Haldi, laughter and heartfelt blessings on the morning of the wedding." },
