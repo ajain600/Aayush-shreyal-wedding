@@ -10,10 +10,8 @@ window.INVITE = {
   countdownTo: "2026-11-24T19:00:00+05:30",   // the wedding (Barat)
   /* RSVPs and wishes open WhatsApp to the FIRST number; the guest then sees one-tap buttons to send the same
      message to the others. Format: country code + number, no + or spaces (91 = India). "name" is optional. */
-  contacts: [
-    { name: "", number: "919713543026" },
-    { name: "", number: "919691020600" },
-    { name: "", number: "916232400718" }
+    contacts: [
+    { name: "", number: "919713543026" }
   ],
 
   /* Your own media. Same folder layout as the reference pack: put files in images/ and media/ with these names.
